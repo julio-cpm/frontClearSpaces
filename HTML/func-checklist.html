@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checklist - SGC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <script src="../JS/common.js" defer></script>
+    <script src="../JS/func-checklist.js" defer></script>
+</head>
+
+<body>
+    <div class="app-container">
+        <div class="page" id="func-checklist"
+            style="display: block; opacity: 1; visibility: visible; position: relative;">
+            <div class="header">
+                <a class="btn-voltar" href="func-tarefas.html" style="text-decoration: none;">‹</a>
+                <h1>Checklist de Execução</h1>
+            </div>
+            <div class="page-content">
+                <h3 id="checklist-titulo-ambiente"
+                    style="color: var(--azul-escuro); font-weight: 700; margin-bottom: 6px;">Ambiente</h3>
+                <p id="checklist-titulo-tarefa" style="font-size: 14px; color: #666; margin-bottom: 20px;"></p>
+
+                <div id="etapa-foto-antes">
+                    <h4 style="margin-bottom: 8px; color: var(--azul-escuro);">📷 Foto ANTES de iniciar</h4>
+
+                    <video id="video-camera-antes" autoplay playsinline
+                        style="display:none; width:100%; border-radius:8px; background:#000;"></video>
+                    <canvas id="canvas-captura-antes" style="display:none;"></canvas>
+                    <img id="preview-foto-antes" style="display:none; width:100%; border-radius:8px;">
+
+                    <div style="display:flex; gap:10px; margin-top:10px;">
+                        <button type="button" class="btn-primary" id="btn-abrir-camera-antes"
+                            onclick="abrirCamera('antes')">Abrir Câmera</button>
+                        <button type="button" class="btn-primary" id="btn-capturar-antes"
+                            onclick="capturarFoto('antes')" style="display:none;">Capturar Foto</button>
+                        <button type="button" class="btn-danger" id="btn-refazer-antes" onclick="refazerFoto('antes')"
+                            style="display:none;">Tirar Outra</button>
+                    </div>
+                </div>
+
+                <div id="etapa-checklist"
+                    style="margin-top:25px; opacity:0.4; pointer-events:none; transition: opacity .3s;">
+                    <h3 style="color: var(--azul-escuro); font-weight: 700; margin-bottom: 10px;">Procedimentos</h3>
+                    <p style="font-size: 14px; color: #666; margin-bottom: 15px;">Confirme os procedimentos realizados:
+                    </p>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" class="chk-procedimento"> Lavagem de vasos</label>
+                        <label><input type="checkbox" class="chk-procedimento"> Higienização de pias</label>
+                        <label><input type="checkbox" class="chk-procedimento"> Reposição de papéis</label>
+                        <label><input type="checkbox" class="chk-procedimento"> Recolhimento do lixo</label>
+                    </div>
+                </div>
+
+                <div id="etapa-foto-depois"
+                    style="margin-top:25px; opacity:0.4; pointer-events:none; transition: opacity .3s;">
+                    <h4 style="margin-bottom: 8px; color: var(--azul-escuro);">📷 Foto DEPOIS de finalizar</h4>
+
+                    <video id="video-camera-depois" autoplay playsinline
+                        style="display:none; width:100%; border-radius:8px; background:#000;"></video>
+                    <canvas id="canvas-captura-depois" style="display:none;"></canvas>
+                    <img id="preview-foto-depois" style="display:none; width:100%; border-radius:8px;">
+
+                    <div style="display:flex; gap:10px; margin-top:10px;">
+                        <button type="button" class="btn-primary" id="btn-abrir-camera-depois"
+                            onclick="abrirCamera('depois')">Abrir Câmera</button>
+                        <button type="button" class="btn-primary" id="btn-capturar-depois"
+                            onclick="capturarFoto('depois')" style="display:none;">Capturar Foto</button>
+                        <button type="button" class="btn-danger" id="btn-refazer-depois" onclick="refazerFoto('depois')"
+                            style="display:none;">Tirar Outra</button>
+                    </div>
+                </div>
+
+                <button type="button" class="btn-primary" id="btn-finalizar" style="margin-top: 30px; width: 100%;"
+                    onclick="finalizarChecklist()" disabled>
+                    Finalizar e Enviar
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

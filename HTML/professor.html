@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Professor - SGC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <script src="../JS/common.js" defer></script>
+    <script src="../JS/professor.js" defer></script>
+</head>
+<body>
+    <div class="app-container">
+        <div class="page active" id="professor">
+            <div class="header-operacional">
+                <a class="btn-voltar" href="index.html" onclick="logout()">‹</a>
+                <div class="avatar">
+                    <div class="avatar-img"></div>
+                </div>
+                <h2 id="professor-nome-header">Olá, Professor</h2>
+                <p>Reserva de Salas</p>
+            </div>
+            
+            <div class="page-content narrow">
+                <div id="reserva-atual-container"></div>
+
+                <div class="actions-section">
+                    <a class="btn-primary" href="reserva-form.html">
+                        + Reservar Nova Sala
+                    </a>
+                </div>
+
+                <div class="alerts-section">
+                    <h3>Minhas Reservas de Hoje</h3>
+                    <div id="lista-reservas-hoje-container"></div>
+                </div>
+
+                <div class="footer-section">
+                    <a class="btn-danger" href="index.html" onclick="logout()">Sair do App</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

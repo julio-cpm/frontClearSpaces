@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservar Sala - SGC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <script src="../JS/common.js" defer></script>
+    <script src="../JS/reserva-form.js" defer></script>
+</head>
+<body>
+    <div class="app-container">
+        <div class="page" id="reserva-form" style="display: block; opacity: 1; visibility: visible; position: relative;">
+            <div class="header">
+                <a class="btn-voltar" href="professor.html" style="text-decoration: none;">‹</a>
+                <h1>Reservar Sala</h1>
+            </div>
+            <form class="page-content" onsubmit="event.preventDefault(); salvarReserva();">
+                <div class="input-group">
+                    <label for="sel-reserva-sala">Sala</label>
+                    <select id="sel-reserva-sala" required></select>
+                </div>
+
+                <div style="display: flex; gap: 20px;">
+                    <div class="input-group" style="flex: 1;">
+                        <label for="time-reserva-inicio">Horário de Entrada</label>
+                        <input type="time" id="time-reserva-inicio" required>
+                    </div>
+                    <div class="input-group" style="flex: 1;">
+                        <label for="time-reserva-fim">Horário de Saída Previsto</label>
+                        <input type="time" id="time-reserva-fim" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary" style="margin-top: 15px;">
+                    Confirmar Reserva
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

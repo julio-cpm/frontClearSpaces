@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Tarefa - SGC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <script src="../JS/common.js" defer></script>
+    <script src="../JS/tarefas-form.js" defer></script>
+</head>
+<body>
+    <div class="app-container">
+        <div class="page" id="tarefas-form" style="display: block; opacity: 1; visibility: visible; position: relative;">
+            <div class="header">
+                <a class="btn-voltar" href="tarefas-lista.html" style="text-decoration: none;">‹</a>
+                <h1>Cadastrar Tarefa</h1>
+            </div>
+            <form class="page-content" onsubmit="event.preventDefault(); salvarTarefa();">
+                <div class="input-group">
+                    <label for="txt-tarefa-descricao">Descrição da Tarefa</label>
+                    <input type="text" id="txt-tarefa-descricao" placeholder="Ex: Limpeza de Piso / Lavagem" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="sel-tarefa-tipo">Tipo de Limpeza</label>
+                    <select id="sel-tarefa-tipo" required>
+                        <option value="intensiva">Intensiva</option>
+                        <option value="manutencao">Manuteção</option>
+                        <option value="moderada">Moderada</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="sel-tarefa-periodo">Período</label>
+                    <select id="sel-tarefa-periodo" required>
+                        <option value="1">Manhã</option>
+                        <option value="2">Tarde</option>
+                        <option value="3">Noite</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Tempo Estimado para Conclusão</label>
+                    <div style="display: flex; gap: 20px;">
+                        <div style="flex: 1;">
+                            <label for="tarefa-prazo-horas" style="font-size: 12px; font-weight: 500; text-transform: none; color: #777; margin-bottom: 6px;">Horas</label>
+                            <input type="number" id="tarefa-prazo-horas" min="0" max="23" placeholder="0" inputmode="numeric">
+                        </div>
+                        <div style="flex: 1;">
+                            <label for="tarefa-prazo-minutos" style="font-size: 12px; font-weight: 500; text-transform: none; color: #777; margin-bottom: 6px;">Minutos</label>
+                            <input type="number" id="tarefa-prazo-minutos" min="0" max="59" step="5" placeholder="0" inputmode="numeric">
+                        </div>
+                    </div>
+                    <p style="font-size: 12px; color: #888; margin-top: 8px;">Deixe em branco (ou 0 e 0) se a tarefa não tiver prazo definido.</p>
+                </div>
+
+                <button type="submit" class="btn-primary" style="margin-top: 15px;">
+                    Salvar Tarefa
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

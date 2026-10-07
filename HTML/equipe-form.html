@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Colaborador - SGC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <script src="../JS/common.js" defer></script>
+    <script src="../JS/equipe-form.js" defer></script>
+</head>
+<body>
+    <div class="app-container">
+        <div class="page" id="equipe-form" style="display: flex; opacity: 1; visibility: visible; position: relative;">
+            <div class="header">
+                <a class="btn-voltar" href="equipe-lista.html" style="text-decoration: none;">‹</a>
+                <h1>Cadastrar Colaborador</h1>
+            </div>
+            
+            <form class="page-content" onsubmit="event.preventDefault(); salvarColaborador();">
+                <div class="input-group">
+                    <label for="func-nome">NOME COMPLETO</label>
+                    <input type="text" id="func-nome" placeholder="Digite o nome do colaborador" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="func-cpf">CPF</label>
+                    <input type="text" id="func-cpf" placeholder="000.000.000-00" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="func-senha">NOVA SENHA DE ACESSO</label>
+                    <input type="password" id="func-senha" placeholder="Digite uma senha" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="func-cargo">FUNÇÃO / CARGO</label>
+                    <select id="func-cargo" required>
+                        <option value="" disabled selected>Selecione a função</option>
+                        <option value="asg">ASG</option>
+                        <option value="banheirista">Banheirista</option>
+                        <option value="gerente">Gerente</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="func-periodo">PERÍODO</label>
+                    <select id="func-periodo" required>
+                        <option value="1">Manhã</option>
+                        <option value="2">Tarde</option>
+                        <option value="3">Noite</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-primary" style="margin-top: 15px;">
+                    Salvar Colaborador no Banco
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

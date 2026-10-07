@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade Horária - SGC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <script src="../JS/common.js" defer></script>
+    <script src="../JS/escala-lista.js" defer></script>
+</head>
+<body>
+    <div class="app-container">
+        <div class="page" id="escala-lista" style="display: block; opacity: 1; visibility: visible; position: relative;">
+            <div class="header">
+                <a class="btn-voltar" href="gerente.html" style="text-decoration: none;">‹</a>
+                <h1>Grade Horária</h1>
+            </div>
+            <div class="page-content">
+
+                <div class="progresso-cronograma-card">
+                    <div class="progresso-header">
+                        <h3>Progresso de Limpeza do Dia</h3>
+                        <span id="progresso-percentual-texto" class="progresso-percentual-texto">0%</span>
+                    </div>
+                    <div class="progresso-barra-bg">
+                        <div id="progresso-barra-fill" class="progresso-barra-fill" style="width: 0%;"></div>
+                    </div>
+                    <div class="progresso-legendas">
+                        <span>🟢 Limpo: <strong id="progresso-limpo-numero">0%</strong></span>
+                        <span>🔴 Falta: <strong id="progresso-falta-numero">0%</strong></span>
+                    </div>
+                </div>
+
+                <div class="week-nav" role="tablist">
+                    <span class="active" role="tab" aria-selected="true">SEG</span>
+                    <span role="tab" aria-selected="false">TER</span>
+                    <span role="tab" aria-selected="false">QUA</span>
+                    <span role="tab" aria-selected="false">QUI</span>
+                    <span role="tab" aria-selected="false">SEX</span>
+                </div>
+                <div style="margin-bottom: 25px;">
+                    <a class="btn-primary" href="escala-form.html" onclick="limparFormEscala()" style="text-decoration: none; display: block; text-align: center;">
+                        + Alocar Novo Horário na Grade
+                    </a>
+                </div>
+                <div id="lista-escalas-container"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

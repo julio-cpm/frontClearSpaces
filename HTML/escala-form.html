@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Definir Escala - SGC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <script src="../JS/common.js" defer></script>
+    <script src="../JS/escala-form.js" defer></script>
+</head>
+<body>
+    <div class="app-container">
+        <div class="page" id="escala-form" style="display: block; opacity: 1; visibility: visible; position: relative;">
+            <div class="header">
+                <a class="btn-voltar" href="escala-lista.html" style="text-decoration: none;">‹</a>
+                <h1>Definir Escala de Limpeza</h1>
+            </div>
+            <form class="page-content" onsubmit="event.preventDefault(); salvarEscala();">
+                <div class="input-group">
+                    <label for="sel-escala-dia">Dia da Semana</label>
+                    <select id="sel-escala-dia" required>
+                        <option value="segunda">Segunda-feira</option>
+                        <option value="terça">Terça-feira</option>
+                        <option value="quarta">Quarta-feira</option>
+                        <option value="quinta">Quinta-feira</option>
+                        <option value="sexta">Sexta-feira</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="sel-escala-func">Responsável</label>
+                    <select id="sel-escala-func" required></select>
+                </div>
+                <div class="input-group">
+                    <label for="sel-escala-local">Ambiente Alvo</label>
+                    <select id="sel-escala-local" required></select>
+                </div>
+                <div class="input-group">
+                    <label for="sel-escala-tarefa">Tarefa Atribuída</label>
+                    <select id="sel-escala-tarefa" required></select>
+                </div>
+                <div style="display: flex; gap: 20px;">
+                    <div class="input-group" style="flex: 1;">
+                        <label for="time-escala-inicio">Horário de Entrada</label>
+                        <input type="time" id="time-escala-inicio" required>
+                    </div>
+                    <div class="input-group" style="flex: 1;">
+                        <label for="time-escala-fim">Horário de Término</label>
+                        <input type="time" id="time-escala-fim" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn-consolidar" style="width: 100%; padding: 15px; font-size: 16px; font-weight: bold; background-color: #3498db; color: white; border: none; border-radius: 8px; margin-top: 20px; cursor: pointer;">
+                    Consolidar Grade
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

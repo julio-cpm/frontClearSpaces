@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ocorrências - SGC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../func-ocorrencias.css">
+    <script src="../JS/common.js" defer></script>
+    <script src="../JS/func-ocorrencias.js" defer></script>
+</head>
+<body>
+    <div class="app-container">
+        <div class="page" id="func-ocorrencias" style="display: block; opacity: 1; visibility: visible; position: relative;">
+            <div class="header">
+                <a class="btn-voltar" href="operacional.html" style="text-decoration: none;">‹</a>
+                <h1>Ocorrências</h1>
+            </div>
+            <div class="page-content">
+                <div class="epi-warning-banner">
+                    <span class="epi-icon" aria-hidden="true">🛡️</span>
+                    <div>
+                        <strong>Atenção à Segurança:</strong> Certifique-se de estar utilizando todos os <strong>EPIs obrigatórios</strong> (luvas, botas, óculos de proteção) antes de avaliar ou tratar qualquer incidente no local.
+                    </div>
+                </div>
+
+                <form class="ocorrencia-form-box" onsubmit="event.preventDefault(); salvarOcorrencia();">
+                    <h3 class="form-title">Nova mensagem ao gestor</h3>
+                    
+                    <div class="input-group">
+                        <label for="sel-ocorrencia-gravidade">Qual a gravidade da Ocorrência?</label>
+                        <select id="sel-ocorrencia-gravidade" required>
+                            <option value="leve">🟢 Leve (Falta pontual de insumo, pequenos ajustes)</option>
+                            <option value="moderada">🟡 Moderada (Ambiente muito sujo, atraso parcial)</option>
+                            <option value="urgente">🔴 Urgente (Vazamentos, falta de água, risco físico)</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="txt-ocorrencia-mensagem">Descreva o ocorrido / Mensagem</label>
+                        <textarea id="txt-ocorrencia-mensagem" rows="3" placeholder="Escreva aqui os detalhes do problema para o gerente..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Enviar Relato ao Gestor</button>
+                </form>
+
+                <div class="historico-section">
+                    <h3 class="historico-titulo">Histórico de mensagens enviadas <span class="historico-contador" id="historico-contador">0</span></h3>
+                    <div id="historico-ocorrencias-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

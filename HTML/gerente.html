@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Gerente - SGC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <script src="../JS/common.js" defer></script>
+    <script src="../JS/gerente.js" defer></script>
+</head>
+<body>
+    <div class="app-container">
+        <div class="page" id="gerente" style="display: block; opacity: 1; visibility: visible; position: relative;">
+            <div class="header">
+                <a class="btn-voltar" href="index.html" onclick="logout()" style="text-decoration: none;">‹</a>
+                <h1>Painel do Gerente</h1>
+            </div>
+            <div class="page-content">
+                <div class="status-card">
+                    <h3>Status dos Ambientes hoje</h3>
+                    <div class="progresso-geral-wrapper">
+                        <div class="progresso-anel-container">
+                            <svg viewBox="0 0 120 120" class="progresso-anel-svg">
+                                <circle class="progresso-anel-bg" cx="60" cy="60" r="52"></circle>
+                                <circle id="progresso-anel-fill" class="progresso-anel-fill" cx="60" cy="60" r="52"></circle>
+                            </svg>
+                            <div class="progresso-anel-texto">
+                                <span id="progresso-anel-percentual">0%</span>
+                                <small>Limpo</small>
+                            </div>
+                        </div>
+                        <div class="status-numbers" aria-live="polite">
+                            <div class="stat-item blue">
+                                <h2>0</h2>
+                                <p>Limpos</p>
+                            </div>
+                            <div class="stat-item yellow">
+                                <h2>0</h2>
+                                <p>Pendentes</p>
+                            </div>
+                            <div class="stat-item red-alert">
+                                <h2>0</h2>
+                                <p>Sujos</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-3">
+                    <a class="outline-btn" href="cadastros.html" style="text-decoration: none; color: inherit; display: flex;">
+                        <i aria-hidden="true">🗂️</i>
+                        <span>Gerenciar Cadastros</span>
+                    </a>
+                    <a class="outline-btn" href="escala-lista.html" style="text-decoration: none; color: inherit; display: flex;">
+                        <i aria-hidden="true">📅</i>
+                        <span>Cronograma Semanal</span>
+                    </a>
+                    <a class="outline-btn" href="gerente-historico-ocorrencias.html" style="text-decoration: none; color: inherit; display: flex;">
+                        <i aria-hidden="true">📜</i>
+                        <span>Histórico de Ocorrências</span>
+                    </a>
+                </div>
+
+                <div class="alerts-section">
+                    <h3 style="display: flex; justify-content: space-between; align-items: center;">
+                        <span>Alertas e Ocorrências</span>
+                    </h3>
+                    <div id="painel-alertas-container" aria-live="polite"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

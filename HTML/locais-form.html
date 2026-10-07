@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações do Ambiente - SGC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <script src="../JS/common.js" defer></script>
+    <script src="../JS/locais-form.js" defer></script>
+</head>
+<body>
+    <div class="app-container">
+        <div class="page" id="locais-form" style="display: block; opacity: 1; visibility: visible; position: relative;">
+            <div class="header">
+                <a class="btn-voltar" href="locais-lista.html" style="text-decoration: none;">‹</a>
+                <h1>Configurações do Ambiente</h1>
+            </div>
+            <form class="page-content" onsubmit="event.preventDefault(); salvarLocal();">
+                <div class="input-group">
+                    <label for="txt-local-nome">Nome do Ambiente</label>
+                    <input type="text" id="txt-local-nome" placeholder="Ex: Banheiro Químico Doca 4" required>
+                </div>
+                <div class="input-group">
+                    <label for="txt-local-vaga">Setor / Localização Específica</label>
+                    <input type="text" id="txt-local-vaga" placeholder="Ex: Ala Norte - Bloco B" required>
+                </div>
+                <div class="input-group">
+                    <label for="sel-local-tipo">Tipo de Ambiente</label>
+                    <select id="sel-local-tipo" required>
+                        <option value="sala">Sala</option>
+                        <option value="refeitorio">Refeitório</option>
+                        <option value="banheiro">Sanitários</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="sel-local-status">Status Inicial</label>
+                    <select id="sel-local-status" required>
+                        <option value="limpo">Limpo</option>
+                        <option value="pendente">Pendente de Limpeza</option>
+                        <option value="sujo">Sujo</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary">Salvar Local</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

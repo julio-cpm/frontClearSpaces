@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professores - SGC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <script src="../JS/common.js" defer></script>
+    <script src="../JS/professor-lista.js" defer></script>
+</head>
+<body>
+    <div class="app-container">
+        <div class="page" id="professor-lista" style="display: block; opacity: 1; visibility: visible; position: relative;">
+            <div class="header">
+                <a class="btn-voltar" href="cadastros.html" style="text-decoration: none;">‹</a>
+                <h1>Professores</h1>
+            </div>
+            <div class="page-content">
+                <div style="margin-bottom: 25px;">
+                    <a class="btn-primary" href="professor-form.html" onclick="limparFormProfessor()"
+                        style="text-decoration: none; display: block; text-align: center;">
+                        + Cadastrar Novo Professor
+                    </a>
+                </div>
+                <div id="lista-professores-container"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
