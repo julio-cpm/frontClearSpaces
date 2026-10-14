@@ -1,7 +1,14 @@
 let cacheFuncionarios = JSON.parse(localStorage.getItem("SGC_cache_funcionarios")) || [];
 
-// Circunferência do anel de progresso (2 * PI * raio), raio = 52 no SVG do gerente.html
 const CIRCUNFERENCIA_ANEL = 2 * Math.PI * 52;
+
+function notificar(mensagem, tipo = "success") {
+    if (typeof showToast === "function") {
+        showToast(mensagem, tipo);
+    } else {
+        alert(mensagem);
+    }
+}
 
 document.addEventListener("DOMContentLoaded", async () => {
     await carregarPainelGerente();
@@ -30,7 +37,9 @@ async function carregarPainelGerente() {
             ambientes = await resAmbientes.json();
             localStorage.setItem("SGC_locais_fallback", JSON.stringify(ambientes));
         }
-    } catch (error) {}
+    } catch (error) {
+        console.warn("Erro ao buscar ambientes no painel do gerente.");
+    }
 
     const limpos = ambientes.filter(a => a.statusAmbiente && a.statusAmbiente.toLowerCase() === 'limpo').length;
     const pendentes = ambientes.filter(a => a.statusAmbiente && (a.statusAmbiente.toLowerCase() === 'pendente' || a.statusAmbiente.toLowerCase() === 'pendente de limpeza')).length;
@@ -43,9 +52,6 @@ async function carregarPainelGerente() {
     atualizarAnelProgresso(limpos, ambientes.length);
 }
 
-// Preenche o anel de progresso (SVG) com base em quantos ambientes
-// estão limpos em relação ao total mapeado. A cor do anel muda
-// conforme a faixa de percentual: vermelho < 40%, amarelo < 80%, verde >= 80%.
 function atualizarAnelProgresso(limpos, total) {
     const elFill = document.getElementById("progresso-anel-fill");
     const elTexto = document.getElementById("progresso-anel-percentual");
@@ -88,9 +94,9 @@ async function renderizarAlertasGestor() {
         return;
     }
 
-    const pendentes = ocorrencias.filter(oc => oc.status === "pendente");
+    const pendentes = ocorrencias.filter(oc => oc.status && oc.status.toLowerCase() === "pendente");
 
-    const pesoGravidade = { "urgente": 3, "moderada": 2, "leve": 1};
+    const pesoGravidade = { "urgente": 3, "moderada": 2, "leve": 1 };
 
     pendentes.sort((a, b) => {
         const pesoA = pesoGravidade[a.gravidade?.toLowerCase()] || 0;
@@ -112,34 +118,37 @@ async function renderizarAlertasGestor() {
         ? cacheFuncionarios.map(f => `<option value="${f.id}">${f.nome} (${f.funcao ? f.funcao.toUpperCase() : 'ASG'})</option>`).join('')
         : `<option value="">Nenhum colaborador cadastrado</option>`;
 
-    container.innerHTML = pendentes.map(oc => `
-        <div class="gestor-alerta-card border-${oc.gravidade}">
-            <div class="msg-header-line">
-                <span class="badge-gravidade badge-${oc.gravidade}">${oc.gravidade}</span>
-                <span class="msg-time-stamp">${formatarDataOcorrenciaGestor(oc.dataHora)}</span>
-            </div>
-            <div class="alerta-meta-info">Enviado por: <strong>${oc.remetente ? oc.remetente.nome : 'Desconhecido'}</strong></div>
-            <div class="msg-body-text">"${oc.mensagem}"</div>
+    container.innerHTML = pendentes.map(oc => {
+        const gravidadeFormatada = oc.gravidade ? oc.gravidade.toLowerCase() : 'leve';
+        return `
+            <div class="gestor-alerta-card border-${gravidadeFormatada}">
+                <div class="msg-header-line">
+                    <span class="badge-gravidade badge-${gravidadeFormatada}">${oc.gravidade || 'LEVE'}</span>
+                    <span class="msg-time-stamp">${formatarDataOcorrenciaGestor(oc.dataHora)}</span>
+                </div>
+                <div class="alerta-meta-info">Enviado por: <strong>${oc.remetente ? oc.remetente.nome : 'Desconhecido'}</strong></div>
+                <div class="msg-body-text">"${oc.mensagem}"</div>
 
-            <div class="designar-box">
-                <label>Designar colaborador para solucionar:</label>
-                <div class="designar-controls">
-                    <select id="select-delegar-${oc.id}">
-                        <option value="">Escolha quem vai resolver...</option>
-                        ${optionsFuncionarios}
-                    </select>
-                    <button class="btn-designar-acao" onclick="delegarOcorrencia(${oc.id})">Designar</button>
+                <div class="designar-box">
+                    <label>Designar colaborador para solucionar:</label>
+                    <div class="designar-controls">
+                        <select id="select-delegar-${oc.id}">
+                            <option value="">Escolha quem vai resolver...</option>
+                            ${optionsFuncionarios}
+                        </select>
+                        <button class="btn-designar-acao" onclick="delegarOcorrencia(${oc.id})">Designar</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 async function delegarOcorrencia(idOcorrencia) {
     const select = document.getElementById(`select-delegar-${idOcorrencia}`);
 
     if (!select || !select.value) {
-        showToast("Por favor, selecione um funcionário antes de designar!", "error");
+        notificar("Por favor, selecione um funcionário antes de designar!", "error");
         return;
     }
 
@@ -153,15 +162,15 @@ async function delegarOcorrencia(idOcorrencia) {
         });
 
         if (res.ok) {
-            showToast("Ocorrência designada com sucesso!");
+            notificar("Ocorrência designada com sucesso!", "success");
             await renderizarAlertasGestor();
             return;
         }
 
         const msgErro = await res.text();
-        showToast("Erro ao designar: " + (msgErro || "Tente novamente."), "error");
+        notificar("Erro ao designar: " + (msgErro || "Tente novamente."), "error");
     } catch (error) {
         console.error("Erro de conexão:", error);
-        showToast("Erro ao conectar com o servidor.", "error");
+        notificar("Erro ao conectar com o servidor.", "error");
     }
 }
