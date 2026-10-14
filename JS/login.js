@@ -15,10 +15,6 @@ function extrairIdentificacao(identificacao) {
         return { tipo: 'CPF', dto: { cpf: apenasNumeros, matricula: null } };
     }
 
-    if (apenasNumeros.length === 11) {
-        return { tipo: 'CPF', dto: { cpf: apenasNumeros, matricula: null } };
-    }
-
     return { tipo: 'DESCONHECIDO', dto: { cpf: texto, matricula: texto } };
 }
 
@@ -35,18 +31,18 @@ async function fazerLogin(event) {
 
     const { tipo, dto } = extrairIdentificacao(identificacao);
     const loginDTO = { ...dto, senha };
-
+    
     if (tipo === 'FUNCIONARIO') {
-        return tentarLoginEndpoint(`${API_URL}/funcionarios`, loginDTO, 'funcionario', 'operacional.html');
+        return tentarLoginEndpoint(`${API_URL}/funcionarios`, loginDTO, 'funcionario', 'HTML/operacional.html');
     }
     
     if (tipo === 'PROFESSOR') {
-        return tentarLoginEndpoint(`${API_URL}/professores`, loginDTO, 'professor', 'professor.html');
+        return tentarLoginEndpoint(`${API_URL}/professores`, loginDTO, 'professor', 'HTML/professor.html');
     }
 
-    const logado = await tentarLoginEndpoint(`${API_URL}/funcionarios`, loginDTO, 'funcionario', 'operacional.html', false);
+    const logado = await tentarLoginEndpoint(`${API_URL}/funcionarios`, loginDTO, 'funcionario', 'HTML/operacional.html', false);
     if (!logado) {
-        await tentarLoginEndpoint(`${API_URL}/professores`, loginDTO, 'professor', 'professor.html', true);
+        await tentarLoginEndpoint(`${API_URL}/professores`, loginDTO, 'professor', 'HTML/professor.html', true);
     }
 }
 
@@ -66,7 +62,8 @@ async function tentarLoginEndpoint(url, dto, tipoUsuario, paginaRedirecionamento
 
             const funcao = (usuario.funcao || '').toUpperCase();
             if (funcao === 'GERENTE') {
-                window.location.href = 'gerente.html';
+                // Redireciona para o gerente dentro da pasta HTML/
+                window.location.href = 'HTML/gerente.html';
             } else {
                 window.location.href = paginaRedirecionamento;
             }
