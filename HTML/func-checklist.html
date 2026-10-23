@@ -25,6 +25,7 @@
                     style="color: var(--azul-escuro); font-weight: 700; margin-bottom: 6px;">Ambiente</h3>
                 <p id="checklist-titulo-tarefa" style="font-size:0.875rem; color: #666; margin-bottom: 20px;"></p>
 
+                <!-- ETAPA 1: FOTO ANTES -->
                 <div id="etapa-foto-antes">
                     <h4 style="margin-bottom: 8px; color: var(--azul-escuro);">📷 Foto ANTES de iniciar</h4>
 
@@ -43,19 +44,18 @@
                     </div>
                 </div>
 
+                <!-- ETAPA 2: PROCEDIMENTOS DA TAREFA -->
                 <div id="etapa-checklist"
                     style="margin-top:25px; opacity:0.4; pointer-events:none; transition: opacity .3s;">
                     <h3 style="color: var(--azul-escuro); font-weight: 700; margin-bottom: 10px;">Procedimentos</h3>
                     <p style="font-size:0.875rem; color: #666; margin-bottom: 15px;">Confirme os procedimentos realizados:
                     </p>
                     <div class="checkbox-group">
-                        <label><input type="checkbox" class="chk-procedimento"> Lavagem de vasos</label>
-                        <label><input type="checkbox" class="chk-procedimento"> Higienização de pias</label>
-                        <label><input type="checkbox" class="chk-procedimento"> Reposição de papéis</label>
-                        <label><input type="checkbox" class="chk-procedimento"> Recolhimento do lixo</label>
+                        <!-- Procedimentos são renderizados dinamicamente pelo JS -->
                     </div>
                 </div>
 
+                <!-- ETAPA 3: FOTO DEPOIS -->
                 <div id="etapa-foto-depois"
                     style="margin-top:25px; opacity:0.4; pointer-events:none; transition: opacity .3s;">
                     <h4 style="margin-bottom: 8px; color: var(--azul-escuro);">📷 Foto DEPOIS de finalizar</h4>
