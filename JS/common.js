@@ -97,7 +97,7 @@ function injetarEstiloToast() {
             padding: 12px 20px;
             border-radius: 8px;
             font-family: 'Inter', sans-serif;
-            font-size: 14px;
+            font-size:0.875rem;
             font-weight: 600;
             color: #fff;
             text-align: center;

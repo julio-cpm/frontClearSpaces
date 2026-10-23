@@ -90,7 +90,7 @@ async function carregarMinhasTarefasHoje() {
         <div class="escala-slot" data-index="${index}" style="cursor: ${cron.horarioConclusao ? 'default' : 'pointer'}; ${cron.horarioConclusao ? 'opacity: 0.7;' : ''}">
             <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
                 <div>${cron.ambiente ? cron.ambiente.nome : "Ambiente Geral"}</div>
-                <span style="font-size:11px; font-weight:700; padding:3px 10px; border-radius:12px; white-space:nowrap; ${
+                <span style="font-size:0.6875rem; font-weight:700; padding:3px 10px; border-radius:12px; white-space:nowrap; ${
                     cron.horarioConclusao
                         ? 'background:#eafaf1; color:#1e8449;'
                         : (cron._ocupado ? 'background:#fdecea; color:#c0392b;' : 'background:#eafaf1; color:#1e8449;')

@@ -85,15 +85,15 @@ function renderizarListaNotificacoes() {
         .sort((a, b) => new Date(b.dataHora) - new Date(a.dataHora));
 
     if (notificacoes.length === 0) {
-        container.innerHTML = `<p style="padding:20px; text-align:center; color:#999; font-size:13px;">Nenhuma notificação por aqui.</p>`;
+        container.innerHTML = `<p style="padding:20px; text-align:center; color:#999; font-size:0.8125rem;">Nenhuma notificação por aqui.</p>`;
         return;
     }
 
     container.innerHTML = notificacoes.map(n => `
         <div style="padding:12px 15px; border-bottom:1px solid #f2f2f2; ${n.lida ? '' : 'background:#eaf4fd;'}">
-            <div style="font-weight:700; font-size:13px; color:#1a56db; margin-bottom:3px;">${n.titulo}</div>
-            <div style="font-size:13px; color:#444; margin-bottom:5px;">${n.mensagem}</div>
-            <div style="font-size:11px; color:#999;">${formatarDataNotificacao(n.dataHora)}</div>
+            <div style="font-weight:700; font-size:0.8125rem; color:#1a56db; margin-bottom:3px;">${n.titulo}</div>
+            <div style="font-size:0.8125rem; color:#444; margin-bottom:5px;">${n.mensagem}</div>
+            <div style="font-size:0.6875rem; color:#999;">${formatarDataNotificacao(n.dataHora)}</div>
         </div>
     `).join('');
 }

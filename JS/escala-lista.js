@@ -128,14 +128,14 @@ async function carregarListaEscalas() {
         return `
         <div class="escala-slot" style="border: 1px solid #ccc; padding: 15px; margin-top: 15px; border-radius: 8px; background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
             <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;">
-                <div style="font-weight: bold; color: #1a56db; font-size: 16px; margin-bottom: 5px;">📍 ${cron.ambiente ? cron.ambiente.nome : 'Ambiente Geral'}</div>
-                <span style="font-size:11px; font-weight:700; padding:3px 10px; border-radius:12px; white-space:nowrap; background:${badgeInfo.bg}; color:${badgeInfo.cor};">${badgeInfo.texto}</span>
+                <div style="font-weight: bold; color: #1a56db; font-size:1rem; margin-bottom: 5px;">📍 ${cron.ambiente ? cron.ambiente.nome : 'Ambiente Geral'}</div>
+                <span style="font-size:0.6875rem; font-weight:700; padding:3px 10px; border-radius:12px; white-space:nowrap; background:${badgeInfo.bg}; color:${badgeInfo.cor};">${badgeInfo.texto}</span>
             </div>
             <div style="margin-bottom: 3px;"><strong>Tarefa:</strong> ${cron.tarefa ? cron.tarefa.descricao : 'Limpeza Geral'}</div>
             <div style="margin-bottom: 3px;"><strong>Responsável:</strong> ${cron.funcionario ? cron.funcionario.nome : 'Sem Colaborador'}</div>
             <div style="margin-bottom: 8px; color: #555;">⏰ <strong>Horário:</strong> ${cron.horarioInicio ? cron.horarioInicio.substring(0,5) : '00:00'}h às ${cron.horarioFim ? cron.horarioFim.substring(0,5) : '00:00'}h</div>
             ${cron.horarioConclusao ? `<div style="margin-bottom: 8px; color: #1e8449; font-weight:700;">✅ Concluído às ${formatarHoraConclusaoEscala(cron.horarioConclusao)}</div>` : ''}
-            <div class="crud-actions" style="margin-top:10px; display:flex; justify-content:flex-end; gap: 15px; font-size: 18px; cursor: pointer;">
+            <div class="crud-actions" style="margin-top:10px; display:flex; justify-content:flex-end; gap: 15px; font-size:1.125rem; cursor: pointer;">
                 <span onclick="editarEscala('${cron.id}')" title="Editar">✏️</span>
                 <span onclick="deletarEscala('${cron.id}')" title="Excluir">🗑️</span>
             </div>

@@ -32,7 +32,7 @@ async function carregarListaLocais() {
             <div class="crud-details">
                 <h4>${amb.nome}</h4>
                 <p>Setor: ${amb.localizacao || "Geral"} | Tipo: ${amb.tipo || "Operacional"}</p>
-                <p style="color:${corStatus}; font-weight:bold; font-size:12px;">Status: ${(amb.statusAmbiente || "PENDENTE").toUpperCase()}</p>
+                <p style="color:${corStatus}; font-weight:bold; font-size:0.75rem;">Status: ${(amb.statusAmbiente || "PENDENTE").toUpperCase()}</p>
             </div>
             <div class="crud-actions">
                 <span onclick="editarLocal(${amb.id})" style="cursor:pointer; margin-right: 10px;">✏️</span>

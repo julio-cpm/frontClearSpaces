@@ -67,7 +67,7 @@ async function carregarHistoricoGlobalGestor() {
                 ? `<div class="status-resolvido-box">✓ Designado para: ${oc.encarregado ? oc.encarregado.nome : 'Equipe'}</div>`
                 : `<div class="status-resolvido-box" style="background:#fff3cd; color:#856404; border-color:#ffeeba;">⏳ Aguardando leitura do Gestor</div>`
             }
-            <div class="crud-actions" style="margin-top:10px; display:flex; justify-content:flex-end; gap: 15px; font-size: 18px;">
+            <div class="crud-actions" style="margin-top:10px; display:flex; justify-content:flex-end; gap: 15px; font-size:1.125rem;">
                 <span onclick="editarOcorrencia(${oc.id})" style="cursor:pointer;" title="Alterar responsável designado">✏️</span>
                 <span onclick="deletarOcorrencia(${oc.id})" style="cursor:pointer;" title="Excluir ocorrência">🗑️</span>
             </div>
