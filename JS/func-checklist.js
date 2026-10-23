@@ -8,13 +8,52 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!tarefaAtual || !tarefaAtual.tarefaId) {
         showToast("Nenhuma tarefa selecionada.", "error");
-        window.location.href = "func-tarefas.html";
+        setTimeout(() => { window.location.href = "func-tarefas.html"; }, 1500);
         return;
     }
 
-    document.getElementById("checklist-titulo-ambiente").innerText = tarefaAtual.ambienteNome || "Ambiente";
-    document.getElementById("checklist-titulo-tarefa").innerText = "Tarefa: " + (tarefaAtual.tarefaDescricao || "Limpeza Geral");
+    const elAmbiente = document.getElementById("checklist-titulo-ambiente");
+    const elTarefa = document.getElementById("checklist-titulo-tarefa");
+
+    if (elAmbiente) elAmbiente.innerText = tarefaAtual.ambienteNome || "Ambiente";
+    if (elTarefa) elTarefa.innerText = "Tarefa: " + (tarefaAtual.tarefaDescricao || "Limpeza Geral");
+
+    renderizarProcedimentos();
 });
+
+function renderizarProcedimentos() {
+    const containerGroup = document.querySelector(".checkbox-group");
+    if (!containerGroup) return;
+
+    const listaProcedimentos = (tarefaAtual.procedimentos && tarefaAtual.procedimentos.length > 0)
+        ? tarefaAtual.procedimentos
+        : [
+            { id: 1, descricao: "Lavagem de vasos", concluido: false },
+            { id: 2, descricao: "Higienização de pias", concluido: false },
+            { id: 3, descricao: "Reposição de papéis", concluido: false },
+            { id: 4, descricao: "Recolhimento do lixo", concluido: false }
+          ];
+
+    containerGroup.innerHTML = listaProcedimentos.map(proc => {
+        const isObj = typeof proc === 'object';
+        const id = isObj ? (proc.id || '') : '';
+        const desc = isObj ? proc.descricao : proc;
+        const concluido = isObj ? !!proc.concluido : false;
+
+        return `
+        <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+            <input type="checkbox" class="chk-procedimento" data-id="${id}" data-descricao="${desc}" ${concluido ? 'checked' : ''}> 
+            <span>${desc}</span>
+        </label>
+        `;
+    }).join('');
+
+    document.querySelectorAll(".chk-procedimento").forEach(chk => {
+        chk.addEventListener("change", atualizarBotaoFinalizar);
+    });
+
+    atualizarBotaoFinalizar();
+}
 
 async function abrirCamera(etapa) {
     const video = document.getElementById(`video-camera-${etapa}`);
@@ -34,7 +73,7 @@ async function abrirCamera(etapa) {
         document.getElementById(`btn-capturar-${etapa}`).style.display = "inline-block";
     } catch (error) {
         console.error("Erro ao acessar câmera:", error);
-        showToast("Não foi possível acessar a câmera. Verifique as permissões do navegador.", "error");
+        showToast("Não foi possível acessar a câmera.", "error");
     }
 }
 
@@ -78,6 +117,8 @@ function refazerFoto(etapa) {
 
     if (etapa === "antes") {
         fotoAntesBase64 = null;
+        bloquearEtapa("etapa-checklist");
+        bloquearEtapa("etapa-foto-depois");
     } else {
         fotoDepoisBase64 = null;
     }
@@ -88,8 +129,18 @@ function refazerFoto(etapa) {
 
 function liberarEtapa(idEtapa) {
     const el = document.getElementById(idEtapa);
-    el.style.opacity = "1";
-    el.style.pointerEvents = "auto";
+    if (el) {
+        el.style.opacity = "1";
+        el.style.pointerEvents = "auto";
+    }
+}
+
+function bloquearEtapa(idEtapa) {
+    const el = document.getElementById(idEtapa);
+    if (el) {
+        el.style.opacity = "0.4";
+        el.style.pointerEvents = "none";
+    }
 }
 
 function pararCamera() {
@@ -99,8 +150,20 @@ function pararCamera() {
     }
 }
 
+function todosProcedimentosMarcados() {
+    const checkboxes = document.querySelectorAll(".chk-procedimento");
+    if (checkboxes.length === 0) return true;
+    return Array.from(checkboxes).every(chk => chk.checked);
+}
+
 function atualizarBotaoFinalizar() {
-    document.getElementById("btn-finalizar").disabled = !(fotoAntesBase64 && fotoDepoisBase64);
+    const fotosOk = !!(fotoAntesBase64 && fotoDepoisBase64);
+    const procedimentosOk = todosProcedimentosMarcados();
+
+    const btnFinalizar = document.getElementById("btn-finalizar");
+    if (btnFinalizar) {
+        btnFinalizar.disabled = !(fotosOk && procedimentosOk);
+    }
 }
 
 function extrairBase64Puro(dataUrl) {
@@ -110,10 +173,7 @@ function extrairBase64Puro(dataUrl) {
 }
 
 async function marcarAtribuicaoConcluida() {
-    if (!tarefaAtual.cronogramaId) {
-        console.warn("Nenhum ID de atribuição salvo em SGC_tarefa_atual; não foi possível marcar como concluído.");
-        return;
-    }
+    if (!tarefaAtual.cronogramaId) return;
 
     try {
         const res = await fetch(`${API_URL}/atribuicoes/${tarefaAtual.cronogramaId}/concluir`, {
@@ -121,8 +181,7 @@ async function marcarAtribuicaoConcluida() {
         });
 
         if (!res.ok) {
-            const msgErro = await res.text();
-            console.error("Erro ao concluir atribuição:", msgErro);
+            console.error("Erro ao concluir atribuição:", await res.text());
         }
     } catch (error) {
         console.error("Erro de conexão ao concluir atribuição:", error);
@@ -135,8 +194,20 @@ async function finalizarChecklist() {
         return;
     }
 
+    if (!todosProcedimentosMarcados()) {
+        showToast("Marque todos os procedimentos antes de enviar.", "error");
+        return;
+    }
+
     const antesPuro = extrairBase64Puro(fotoAntesBase64);
     const depoisPuro = extrairBase64Puro(fotoDepoisBase64);
+
+    const checkboxes = document.querySelectorAll(".chk-procedimento");
+    const procedimentosDTO = Array.from(checkboxes).map(chk => ({
+        id: chk.dataset.id ? Number(chk.dataset.id) : null,
+        descricao: chk.dataset.descricao || chk.nextElementSibling.innerText,
+        concluido: chk.checked
+    }));
 
     try {
         const resAntes = await fetch(`${API_URL}/tarefas/${tarefaAtual.tarefaId}/ft_antes`, {
@@ -145,29 +216,30 @@ async function finalizarChecklist() {
             body: JSON.stringify({ foto_antes: antesPuro })
         });
 
-        const resDepois = await fetch(`${API_URL}/tarefas/${tarefaAtual.tarefaId}/ft_depois`, {
+        const resConcluir = await fetch(`${API_URL}/tarefas/${tarefaAtual.tarefaId}/concluir`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ foto_depois: depoisPuro })
+            body: JSON.stringify({
+                foto_depois: depoisPuro,
+                procedimentos: procedimentosDTO
+            })
         });
 
         await marcarAtribuicaoConcluida();
 
-        if (resAntes.ok && resDepois.ok) {
+        if (resAntes.ok && resConcluir.ok) {
             showToast("Checklist finalizado com sucesso!");
         } else {
-            const erroAntes = !resAntes.ok ? await resAntes.text() : null;
-            const erroDepois = !resDepois.ok ? await resDepois.text() : null;
-            console.error("Erro ao salvar fotos:", erroAntes, erroDepois);
-            showToast("Checklist enviado, mas houve erro ao salvar as fotos no servidor.", "error");
+            showToast("Checklist enviado com avisos ao salvar fotos/procedimentos.", "error");
         }
-    } catch (error) {
-        console.error("Erro ao enviar fotos ao servidor:", error);
-        showToast("Erro ao conectar com o servidor. As fotos não foram enviadas.", "error");
-    }
 
-    localStorage.removeItem("SGC_tarefa_atual");
-    window.location.href = "func-tarefas.html";
+        localStorage.removeItem("SGC_tarefa_atual");
+        setTimeout(() => { window.location.href = "func-tarefas.html"; }, 1500);
+
+    } catch (error) {
+        console.error("Erro ao enviar dados:", error);
+        showToast("Erro ao conectar com o servidor.", "error");
+    }
 }
 
 window.addEventListener("beforeunload", pararCamera);

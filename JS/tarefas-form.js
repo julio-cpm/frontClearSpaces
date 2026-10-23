@@ -1,6 +1,15 @@
 let editandoTarefaId = null;
+let procedimentosLista = [];
 
 document.addEventListener("DOMContentLoaded", async () => {
+    procedimentosLista = [
+        "Lavagem de vasos",
+        "Higienização de pias",
+        "Reposição de papéis",
+        "Recolhimento do lixo"
+    ];
+    renderizarListaProcedimentos();
+
     const editId = localStorage.getItem('editTarefaId');
     if (!editId) return;
 
@@ -12,12 +21,19 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (tarefa) {
                 editandoTarefaId = tarefa.id;
                 document.getElementById('txt-tarefa-descricao').value = tarefa.descricao || '';
-                document.getElementById('sel-tarefa-tipo').value = tarefa.tipoLimpezaEnum || 'completa';
+                document.getElementById('sel-tarefa-tipo').value = tarefa.tipoLimpezaEnum || 'intensiva';
                 document.getElementById('sel-tarefa-periodo').value = tarefa.periodo ? tarefa.periodo.id : 1;
+
+                if (tarefa.procedimentos && tarefa.procedimentos.length > 0) {
+                    procedimentosLista = tarefa.procedimentos;
+                    renderizarListaProcedimentos();
+                }
 
                 preencherPrazoComoDuracao(tarefa.horarioConclusao);
 
-                document.querySelector('h1').innerText = "Editar Tarefa";
+                const h1 = document.querySelector('h1');
+                if (h1) h1.innerText = "Editar Tarefa";
+                
                 const btnSubmit = document.querySelector("button[type='submit']");
                 if (btnSubmit) btnSubmit.innerText = "Atualizar Tarefa";
             }
@@ -26,6 +42,45 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.error("Erro ao carregar tarefa para edição:", err);
     }
 });
+
+function adicionarProcedimentoNaLista() {
+    const input = document.getElementById('txt-novo-procedimento');
+    const valor = input.value.trim();
+
+    if (!valor) {
+        showToast("Digite o nome do procedimento!", "error");
+        return;
+    }
+
+    procedimentosLista.push(valor);
+    input.value = "";
+    renderizarListaProcedimentos();
+}
+
+function removerProcedimentoDaLista(index) {
+    procedimentosLista.splice(index, 1);
+    renderizarListaProcedimentos();
+}
+
+function renderizarListaProcedimentos() {
+    const ul = document.getElementById('lista-procedimentos-cadastrados');
+    if (!ul) return;
+
+    if (procedimentosLista.length === 0) {
+        ul.innerHTML = `<li style="font-size:0.875rem; color:#888;">Nenhum procedimento adicionado.</li>`;
+        return;
+    }
+
+    ul.innerHTML = procedimentosLista.map((proc, idx) => {
+        const desc = typeof proc === 'string' ? proc : proc.descricao;
+        return `
+            <li style="display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 10px 14px; border: 1px solid #d3d4d8; border-radius: 10px; font-size: 0.9375rem;">
+                <span>📌 ${desc}</span>
+                <span onclick="removerProcedimentoDaLista(${idx})" style="cursor: pointer; color: #e74c3c; font-weight: bold; margin-left: 10px;">✕</span>
+            </li>
+        `;
+    }).join('');
+}
 
 function preencherPrazoComoDuracao(horarioConclusaoIso) {
     const inputHoras = document.getElementById('tarefa-prazo-horas');
@@ -77,11 +132,19 @@ async function salvarTarefa() {
         return;
     }
 
+    const procedimentosDTO = procedimentosLista.map(p => {
+        if (typeof p === 'string') {
+            return { descricao: p, concluido: false };
+        }
+        return { id: p.id || null, descricao: p.descricao, concluido: !!p.concluido };
+    });
+
     const tarefaDTO = {
         descricao: descricao,
         tipoLimpeza: tipoLimpeza,
         periodoId: Number(periodoId),
-        horarioConclusao: calcularHorarioConclusao(horas, minutos)
+        horarioConclusao: calcularHorarioConclusao(horas, minutos),
+        procedimentos: procedimentosDTO
     };
 
     const url = editandoTarefaId ? `${API_URL}/tarefas/${editandoTarefaId}` : `${API_URL}/tarefas`;

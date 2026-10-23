@@ -133,7 +133,8 @@ function abrirChecklist(cron) {
         cronogramaId: cron.id,
         tarefaId: cron.tarefa.id,
         tarefaDescricao: cron.tarefa.descricao,
-        ambienteNome: cron.ambiente ? cron.ambiente.nome : "Ambiente"
+        ambienteNome: cron.ambiente ? cron.ambiente.nome : "Ambiente",
+        procedimentos: cron.tarefa.procedimentos || []
     };
 
     localStorage.setItem("SGC_tarefa_atual", JSON.stringify(dadosTarefa));
