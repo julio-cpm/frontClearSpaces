@@ -3,19 +3,20 @@ function extrairIdentificacao(identificacao) {
     const textoUpper = texto.toUpperCase();
     const apenasNumeros = texto.replace(/\D/g, '');
 
-    if (/^FUNC-\d{4}$/i.test(texto)) {
-        return { tipo: 'FUNCIONARIO', dto: { cpf: null, matricula: textoUpper } };
+    if (apenasNumeros.length === 11) {
+        return { tipo: 'CPF', dto: { cpf: apenasNumeros, matricula: null } };
     }
 
     if (/^PROF-\d{4}$/i.test(texto)) {
         return { tipo: 'PROFESSOR', dto: { cpf: null, matricula: textoUpper } };
     }
 
-    if (apenasNumeros.length === 11) {
-        return { tipo: 'CPF', dto: { cpf: apenasNumeros, matricula: null } };
+    if (/^FUNC-\d{4}$/i.test(texto)) {
+        return { tipo: 'FUNCIONARIO', dto: { cpf: null, matricula: textoUpper } };
     }
 
-    return { tipo: 'DESCONHECIDO', dto: { cpf: texto, matricula: texto } };
+    // Se o tipo for indeterminado, define CPF como nulo para que o backend consulte a matrícula
+    return { tipo: 'DESCONHECIDO', dto: { cpf: null, matricula: textoUpper } };
 }
 
 async function fazerLogin(event) {
@@ -62,7 +63,6 @@ async function tentarLoginEndpoint(url, dto, tipoUsuario, paginaRedirecionamento
 
             const funcao = (usuario.funcao || '').toUpperCase();
             if (funcao === 'GERENTE') {
-                // Redireciona para o gerente dentro da pasta HTML/
                 window.location.href = 'HTML/gerente.html';
             } else {
                 window.location.href = paginaRedirecionamento;
@@ -80,14 +80,31 @@ async function tentarLoginEndpoint(url, dto, tipoUsuario, paginaRedirecionamento
     return false;
 }
 
-async function redefinirSenha(event) {
+/* --- Controle do Modal de Redefinição de Senha --- */
+
+function abrirModalRedefinir(event) {
     if (event) event.preventDefault();
+    const modal = document.getElementById('modal-redefinir');
+    if (modal) modal.style.display = 'flex';
+}
 
-    const identificacao = prompt("Digite seu CPF ou Matrícula:");
-    if (!identificacao) return;
+function fecharModalRedefinir() {
+    const modal = document.getElementById('modal-redefinir');
+    if (modal) modal.style.display = 'none';
+    const idInput = document.getElementById('redefinir-identificacao');
+    const passInput = document.getElementById('redefinir-nova-senha');
+    if (idInput) idInput.value = '';
+    if (passInput) passInput.value = '';
+}
 
-    const novaSenha = prompt("Digite a sua nova senha:");
-    if (!novaSenha) return;
+async function confirmarRedefinicaoSenha() {
+    const identificacao = document.getElementById('redefinir-identificacao').value.trim();
+    const novaSenha = document.getElementById('redefinir-nova-senha').value.trim();
+
+    if (!identificacao || !novaSenha) {
+        alert("Preencha todos os campos!");
+        return;
+    }
 
     const { tipo, dto } = extrairIdentificacao(identificacao);
     const esqueciDTO = { ...dto, novaSenha };
@@ -106,6 +123,7 @@ async function redefinirSenha(event) {
 
             if (response.ok) {
                 alert(await response.text());
+                fecharModalRedefinir();
                 return;
             }
         } catch (error) {
